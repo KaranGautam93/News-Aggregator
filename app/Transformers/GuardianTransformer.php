@@ -9,12 +9,15 @@ class GuardianTransformer implements NewsTransformerInterface
 
     public function transform(array $raw): array
     {
+        $publishedAt = !empty($raw['publishedAt']) ? date('Y-m-d H:i:s', strtotime($raw['publishedAt']))
+            : now()->toDateTime()->format('Y-m-d H:i:s');
+
         return [
             'title' => $raw['webTitle'] ?? '',
             'content' => $raw['fields']['body'] ?? '',
             'category' => $raw['sectionName'] ?? 'general',
             'source' => 'The Guardian',
-            'published_at' => $raw['webPublicationDate'] ?? now()->toDateTimeString(),
+            'published_at' => $publishedAt,
         ];
     }
 }

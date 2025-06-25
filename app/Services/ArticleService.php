@@ -36,18 +36,27 @@ class ArticleService
 
     public function storeArticles(array $rawArticles)
     {
-        foreach ($rawArticles as $raw) {
-            $mongo = ArticleContent::create(['content' => $raw['content'] ?? '']);
-
-            Article::updateOrCreate(
-                ['title' => $raw['title']],
+        foreach ($rawArticles as $data) {
+            $article = Article::updateOrCreate(
+                ['title' => $data['title'], 'source' => $data['source']],
                 [
-                    'category' => $raw['category'] ?? 'general',
-                    'source' => $raw['source'] ?? 'unknown',
-                    'published_at' => now(), // parse if available
-                    'mongo_id' => $mongo->_id,
+                    'category'     => $data['category'],
+                    'published_at' => $data['published_at'],
                 ]
             );
+
+            if ($article->mongo_id) {
+                ArticleContent::where('_id', $article->mongo_id)
+                    ->update(['content' => $data['content']]);
+            } else {
+                $mongo = ArticleContent::create([
+                    'content' => $data['content'],
+                ]);
+
+                $article->mongo_id = $mongo->_id;
+                $article->save();
+            }
+
         }
     }
 
