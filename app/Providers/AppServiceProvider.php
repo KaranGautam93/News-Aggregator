@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Transformers\GuardianTransformer;
+use App\Transformers\NewsApiTransformer;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(NewsApiTransformer::class, NewsApiTransformer::class);
+        $this->app->bind(GuardianTransformer::class, GuardianTransformer::class);
     }
 
     /**

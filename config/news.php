@@ -5,7 +5,7 @@ return [
         App\Services\Sources\GuardianSource::class,
 //        App\Services\Sources\NyTimesSource::class,
 //        App\Services\Sources\BbcSource::class,
-//        App\Services\Sources\NewsApiSource::class,
+        App\Services\Sources\NewApiSource::class,
 //        App\Services\Sources\NewsCredSource::class,
 //        App\Services\Sources\OpenNewsSource::class,
     ],

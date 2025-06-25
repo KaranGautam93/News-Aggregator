@@ -43,7 +43,7 @@ class ArticleService
                 ['title' => $raw['title']],
                 [
                     'category' => $raw['category'] ?? 'general',
-                    'source' => $raw['source']['name'] ?? 'unknown',
+                    'source' => $raw['source'] ?? 'unknown',
                     'published_at' => now(), // parse if available
                     'mongo_id' => $mongo->_id,
                 ]
