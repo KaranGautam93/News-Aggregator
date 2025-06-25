@@ -3,11 +3,8 @@
 return [
     'sources' => [
         App\Services\Sources\GuardianSource::class,
-//        App\Services\Sources\NyTimesSource::class,
-//        App\Services\Sources\BbcSource::class,
         App\Services\Sources\NewApiSource::class,
-//        App\Services\Sources\NewsCredSource::class,
-//        App\Services\Sources\OpenNewsSource::class,
+        App\Services\Sources\NYTSource::class,
     ],
 
     'guardian' => [
@@ -18,7 +15,7 @@ return [
         'key' => env('NEWSAPI_KEY'),
     ],
 
-    'nytimes' => [
-        'key' => env('NYTIMES_API_KEY'),
+    'nytapi' => [
+        'key' => env('NYT_API_KEY'),
     ],
 ];
