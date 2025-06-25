@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\constants\ArticleSources;
 use App\Transformers\NewsTransformerInterface;
 
 class GuardianTransformer implements NewsTransformerInterface
@@ -16,8 +17,19 @@ class GuardianTransformer implements NewsTransformerInterface
             'title' => $raw['webTitle'] ?? '',
             'content' => $raw['fields']['body'] ?? '',
             'category' => $raw['sectionName'] ?? 'general',
-            'source' => 'The Guardian',
+            'source' => ArticleSources::THE_GUARDIAN_SOURCE,
             'published_at' => $publishedAt,
+            'authors' => $this->extractAuthors($raw),
         ];
+    }
+
+    private function extractAuthors(array $raw): array
+    {
+        if (!isset($raw['tags']) || !is_array($raw['tags'])) return [];
+
+        return collect($raw['tags'])
+            ->filter(fn($tag) => $tag['type'] === 'contributor')
+            ->pluck('webTitle')
+            ->toArray();
     }
 }

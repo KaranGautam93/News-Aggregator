@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\constants\ArticleSources;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,12 @@ class ArticleController
 
     public function index(Request $request)
     {
+        $source = $request->get('source');
+
+        if (!in_array(strtolower($source), ArticleSources::VALID_SOURCES)) {
+            return response()->json(['message' => 'Invalid source'], 400);
+        }
+
         $articles = $this->articleService->listArticles($request->all());
         return response()->json($articles);
     }

@@ -42,6 +42,7 @@ class ArticleService
                 [
                     'category'     => $data['category'],
                     'published_at' => $data['published_at'],
+                    'author'       => $data['authors'],
                 ]
             );
 

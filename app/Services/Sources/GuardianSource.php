@@ -19,7 +19,7 @@ class GuardianSource implements SourceInterface
 
     public function fetch(): array
     {
-        $res = Http::get(self::BASE_URL . '/search?api-key=' . config('news.guardian.key') . '&show-fields=all');
+        $res = Http::get(self::BASE_URL . '/search?api-key=' . config('news.guardian.key') . '&show-fields=all&show-tags=contributor');
 
         $articles = $res->json('response.results') ?? [];
 

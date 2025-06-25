@@ -3,7 +3,7 @@
 return [
     'sources' => [
         App\Services\Sources\GuardianSource::class,
-        App\Services\Sources\NewApiSource::class,
+        App\Services\Sources\NewsApiSource::class,
         App\Services\Sources\NYTSource::class,
     ],
 

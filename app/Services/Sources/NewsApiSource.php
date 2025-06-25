@@ -7,7 +7,7 @@ use App\Transformers\NewsApiTransformer;
 use App\Transformers\NewsTransformerInterface;
 use Illuminate\Support\Facades\Http;
 
-class NewApiSource implements SourceInterface
+class NewsApiSource implements SourceInterface
 {
     const BASE_URL = 'https://eventregistry.org';
     protected $transformer;

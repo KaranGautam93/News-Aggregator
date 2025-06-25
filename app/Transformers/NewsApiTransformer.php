@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+use App\constants\ArticleSources;
 use App\Transformers\NewsTransformerInterface;
 
 class NewsApiTransformer implements NewsTransformerInterface
@@ -19,8 +20,17 @@ class NewsApiTransformer implements NewsTransformerInterface
             'title' => $raw['title'] ?? '',
             'content' => $raw['body'] ?? '',
             'category' => $category,
-            'source' => 'News Api',
+            'source' => ArticleSources::NEWS_API_SOURCE,
             'published_at' => $publishedAt,
+            'authors' => $this->extractAuthors($raw),
         ];
     }
+
+    private function extractAuthors(array $raw): array
+    {
+        return isset($raw['authors']) && is_array($raw['authors'])
+            ? array_map(fn($a) => $a['name'], $raw['authors'])
+            : [];
+    }
+
 }
