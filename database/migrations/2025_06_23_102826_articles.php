@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('source');
             $table->date('published_at');
-            $table->string('mongo_id'); // reference to Mongo
+            $table->string('mongo_id');
             $table->timestamps();
         });
 

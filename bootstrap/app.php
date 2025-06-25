@@ -1,8 +1,10 @@
 <?php
 
+use App\Console\Commands\FetchArticlesCommand;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,6 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\ThrottleRequests::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
+    })
+    ->withCommands([
+        FetchArticlesCommand::class,
+    ])
+    ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command('news:fetch')->everyFiveMinutes();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
