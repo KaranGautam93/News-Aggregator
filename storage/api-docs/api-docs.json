@@ -370,6 +370,116 @@
                 ]
             }
         },
+        "/api/user/feed": {
+            "get": {
+                "tags": [
+                    "User Feed"
+                ],
+                "summary": "Get personalized news feed for the user",
+                "description": "Returns a list of articles personalized based on the user's preferred sources, categories, and authors.",
+                "operationId": "getPersonalizedFeed",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of articles per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of personalized articles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Feed fetched successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Article"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Preference not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No preferences found. Please set preferences first."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/user/preferences": {
             "get": {
                 "tags": [
@@ -379,7 +489,125 @@
                 "operationId": "b9e662271a19e3c25c2b6bcdf8ff231d",
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserPreference"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User Preferences"
+                ],
+                "summary": "Update user preferences",
+                "operationId": "14fa81425169bcaa54d884c8eaf3d1ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "preferred_sources": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "preferred_categories": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "preferred_authors": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Preferences updated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preferences updated successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserPreference"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid source"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -459,25 +687,53 @@
                     }
                 },
                 "type": "object"
-            }
-        },
-        "parameters": {
-            "Accept": {
-                "name": "Accept",
-                "in": "header",
-                "description": "Response content type",
-                "required": false,
-                "schema": {
-                    "type": "string",
-                    "default": "application/json"
-                }
-            }
-        },
-        "securitySchemes": {
-            "sanctum": {
-                "type": "http",
-                "bearerFormat": "Token",
-                "scheme": "bearer"
+            },
+            "UserPreference": {
+                "title": "User Preference",
+                "description": "User's preferred sources, categories, and authors for personalized news feed",
+                "properties": {
+                    "user_id": {
+                        "description": "The ID of the user",
+                        "type": "number",
+                        "example": "42"
+                    },
+                    "preferred_sources": {
+                        "description": "List of preferred news sources",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "BBC News",
+                            "NYT",
+                            "The Guardian"
+                        ]
+                    },
+                    "preferred_categories": {
+                        "description": "Preferred categories",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "Technology",
+                            "Sports",
+                            "Health"
+                        ]
+                    },
+                    "preferred_authors": {
+                        "description": "Preferred authors",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "John Doe",
+                            "Alice Smith"
+                        ]
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -489,6 +745,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "User Feed",
+            "description": "User Feed"
         },
         {
             "name": "User Preferences",

@@ -11,8 +11,18 @@ class UserPreferenceService
     public function getUserPreference()
     {
         $prefs = UserPreference::firstOrCreate([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::id()
         ]);
+
+        if (!isset($prefs->preferred_sources)) {
+            $prefs->preferred_sources = [];
+            $prefs->preferred_categories = [];
+            $prefs->preferred_authors = [];
+
+            $prefs->save();
+        }
+
+        unset($prefs->updated_at, $prefs->created_at, $prefs->id);
 
         return $prefs;
     }
@@ -23,6 +33,8 @@ class UserPreferenceService
             ['user_id' => Auth::id()],
             $request
         );
+
+        unset($prefs->updated_at, $prefs->created_at, $prefs->id);
 
         return $prefs;
     }

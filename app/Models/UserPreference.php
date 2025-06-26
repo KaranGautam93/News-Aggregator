@@ -9,6 +9,7 @@ class UserPreference extends Model
     protected $connection = 'mongodb';
     protected $collection = 'user_preferences';
 
+    protected $guarded = [];
     protected $fillable = [
         'user_id',
         'preferred_sources',

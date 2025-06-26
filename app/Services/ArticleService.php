@@ -42,9 +42,9 @@ class ArticleService
             $article = Article::updateOrCreate(
                 ['title' => $data['title'], 'source' => $data['source']],
                 [
-                    'category'     => $data['category'],
+                    'category' => $data['category'],
                     'published_at' => $data['published_at'],
-                    'author'       => $data['authors'],
+                    'author' => $data['authors'],
                 ]
             );
 

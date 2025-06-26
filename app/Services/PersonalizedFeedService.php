@@ -34,6 +34,6 @@ class PersonalizedFeedService
             $query->whereJsonContains('authors', $prefs->preferred_authors);
         }
 
-        return $query->latest('published_at')->paginate($perPage);
+        return $query->latest('published_at')->select(['id', 'category', 'source', 'author', 'title', 'published_at'])->paginate($perPage);
     }
 }
