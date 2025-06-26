@@ -17,6 +17,7 @@ cd /var/www
 
 echo "Running migrations"
 php artisan migrate
+php artisan l5-swagger:generate
 
 # Start PHP-FPM
 exec php-fpm

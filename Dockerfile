@@ -13,6 +13,8 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath sockets
 # Install MongoDB extension
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
+RUN pecl install redis && docker-php-ext-enable redis
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

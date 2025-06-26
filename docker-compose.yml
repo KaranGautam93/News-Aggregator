@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
     app:
         build:
@@ -14,6 +12,7 @@ services:
         depends_on:
             - mysql
             - mongo
+            - redis
         entrypoint: ["/var/www/docker/entrypoint.sh"]
 
     nginx:
@@ -69,6 +68,14 @@ services:
             sh -c "while [ true ]; do php artisan schedule:run --no-interaction & sleep 60; done"
         networks:
             - laravel
+    redis:
+        image: redis:alpine
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis_data:/data
+        networks:
+            - laravel
 
 networks:
     laravel:
@@ -76,3 +83,4 @@ networks:
 volumes:
     mysql_data:
     mongo_data:
+    redis_data:

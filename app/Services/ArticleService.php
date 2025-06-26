@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\ArticleContent;
 use App\Repository\ArticleRepository;
 use App\Repository\ArticleContentRepository;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleService
 {
@@ -18,7 +19,11 @@ class ArticleService
 
     public function listArticles(array $filters)
     {
-        return $this->articleRepo->getPaginatedArticles($filters);
+        $key = 'articles_' . md5(json_encode($filters));
+        $articles = Cache::tags(['articles'])->remember($key, now()->addMinutes(2), function () use ($filters) {
+            return $this->articleRepo->getPaginatedArticles($filters);
+        });
+        return $articles;
     }
 
     public function getArticleDetail(int $id)
