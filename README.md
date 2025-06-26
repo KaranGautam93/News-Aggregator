@@ -2,10 +2,11 @@
 Pre-requisites - docker and Xdebug for code coverage
 
 1. Clone the repo and navigate into it.
-2. Run `docker-compose up -d --build`
+2. Configure .env file, can refer to .env.example file 
+3. Run `docker-compose up -d --build`
 
-3. Visit the app at http://localhost:8000
-4. To refer documentation go to http://localhost:8000/api/documentation
+4. Visit the app at http://localhost:8000
+5. To refer documentation go to http://localhost:8000/api/documentation
 
 ### Services
 - Laravel App (PHP 8.3)
