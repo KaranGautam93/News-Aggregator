@@ -4,6 +4,7 @@
 2. Run `docker-compose up -d --build`
 
 3. Visit the app at http://localhost:8000
+4. To refer documentation go to http://localhost:8000/api/documentation
 
 ### Services
 - Laravel App (PHP 8.3)
