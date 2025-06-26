@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         FetchArticlesCommand::class,
     ])
     ->withSchedule(function (Schedule $schedule): void {
-        $schedule->command('news:fetch')->everyFiveMinutes();
+        $schedule->command('news:fetch')->everyTwoMinutes();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Throwable $e, $request) {

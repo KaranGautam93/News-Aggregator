@@ -54,6 +54,21 @@ services:
             - mongo_data:/data/db
         networks:
             - laravel
+    scheduler:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel_scheduler
+        depends_on:
+            - app
+            - mysql
+            - mongo
+        volumes:
+            - .:/var/www
+        command: >
+            sh -c "while [ true ]; do php artisan schedule:run --no-interaction & sleep 60; done"
+        networks:
+            - laravel
 
 networks:
     laravel:
