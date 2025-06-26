@@ -24,9 +24,11 @@ class ArticleService
     public function getArticleDetail(int $id)
     {
         $article = $this->articleRepo->findById($id);
-        if (!$article) return null;
+
+        if (empty($article)) return null;
 
         $content = $this->contentRepo->getContentByMongoId($article->mongo_id);
+        unset($article->mongo_id);
 
         return [
             ...$article->toArray(),

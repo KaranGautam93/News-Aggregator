@@ -16,12 +16,13 @@ class ArticleRepository
             ->when($filters['category'] ?? null, fn($q, $category) => $q->where('category', $category))
             ->when($filters['source'] ?? null, fn($q, $source) => $q->where('source', $source))
             ->orderByDesc('published_at')
+            ->select(['id', 'title', 'author', 'category', 'source', 'published_at'])
             ->paginate($filters['per_page'] ?? 10);
     }
 
     public function findById(int $id): ?Article
     {
-        return Article::find($id);
+        return Article::find($id)?->first(['id', 'title', 'author', 'category', 'source', 'published_at','mongo_id']);
     }
 
 }
