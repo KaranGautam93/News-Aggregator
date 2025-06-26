@@ -1,5 +1,5 @@
 ### Docker Laravel Setup
-Pre-requisites - docker
+Pre-requisites - docker and Xdebug for test coverage
 
 1. Clone the repo and navigate into it.
 2. Run `docker-compose up -d --build`
