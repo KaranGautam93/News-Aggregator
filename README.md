@@ -1,4 +1,5 @@
 ### Docker Laravel Setup
+Pre-requisites - docker
 
 1. Clone the repo and navigate into it.
 2. Run `docker-compose up -d --build`
