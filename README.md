@@ -1,4 +1,4 @@
-### Docker Laravel Setup
+### News Aggregator Setup
 Pre-requisites - docker and Xdebug for code coverage
 
 1. Clone the repo and navigate into it.
