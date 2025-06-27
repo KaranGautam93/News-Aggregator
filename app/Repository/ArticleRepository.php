@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Article;
+use App\Models\UserPreference;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ArticleRepository
@@ -22,7 +23,38 @@ class ArticleRepository
 
     public function findById(int $id): ?Article
     {
-        return Article::find($id)?->first(['id', 'title', 'author', 'category', 'source', 'published_at','mongo_id']);
+        return Article::find($id)?->first(['id', 'title', 'author', 'category', 'source', 'published_at', 'mongo_id']);
+    }
+
+    public function addArticle($data): ?Article
+    {
+        return Article::updateOrCreate(
+            ['title' => $data['title'], 'source' => $data['source']],
+            [
+                'category' => $data['category'],
+                'published_at' => $data['published_at'],
+                'author' => $data['authors'],
+            ]
+        );
+    }
+
+    public function getPreferredArticles(UserPreference $prefs, $perPage): LengthAwarePaginator
+    {
+        $query = Article::query();
+
+        if (!empty($prefs->preferred_sources)) {
+            $query->whereIn('source', $prefs->preferred_sources);
+        }
+
+        if (!empty($prefs->preferred_categories)) {
+            $query->whereIn('category', $prefs->preferred_categories);
+        }
+
+        if (!empty($prefs->preferred_authors)) {
+            $query->whereJsonContains('authors', $prefs->preferred_authors);
+        }
+
+        return $query->latest('published_at')->select(['id', 'category', 'source', 'author', 'title', 'published_at'])->paginate($perPage);
     }
 
 }

@@ -4,15 +4,18 @@ namespace App\Services;
 
 use App\constants\ArticleSources;
 use App\Models\UserPreference;
+use App\Repository\UserPreferenceRepository;
 use Illuminate\Support\Facades\Auth;
 
 class UserPreferenceService
 {
+    public function __construct(protected UserPreferenceRepository $userPreferenceRepository)
+    {
+    }
+
     public function getUserPreference()
     {
-        $prefs = UserPreference::firstOrCreate([
-            'user_id' => Auth::id()
-        ]);
+        $prefs = $this->userPreferenceRepository->getOrCreateUserPreferences(Auth::id());
 
         if (!isset($prefs->preferred_sources)) {
             $prefs->preferred_sources = [];
@@ -29,10 +32,7 @@ class UserPreferenceService
 
     public function updateUserPreference($request)
     {
-        $prefs = UserPreference::updateOrCreate(
-            ['user_id' => Auth::id()],
-            $request
-        );
+        $prefs = $this->userPreferenceRepository->getOrUpdateUserPreferences($request, Auth::id());
 
         unset($prefs->updated_at, $prefs->created_at, $prefs->id);
 

@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Article;
-use App\Models\ArticleContent;
 use App\Repository\ArticleRepository;
 use App\Repository\ArticleContentRepository;
 use Illuminate\Support\Facades\Cache;
@@ -44,23 +42,12 @@ class ArticleService
     public function storeArticles(array $rawArticles)
     {
         foreach ($rawArticles as $data) {
-            $article = Article::updateOrCreate(
-                ['title' => $data['title'], 'source' => $data['source']],
-                [
-                    'category' => $data['category'],
-                    'published_at' => $data['published_at'],
-                    'author' => $data['authors'],
-                ]
-            );
+            $article = $this->articleRepo->addArticle($data);
 
             if ($article->mongo_id) {
-                ArticleContent::where('_id', $article->mongo_id)
-                    ->update(['content' => $data['content']]);
+                $this->contentRepo->updateContent($data, $article->mongo_id);
             } else {
-                $mongo = ArticleContent::create([
-                    'content' => $data['content'],
-                ]);
-
+                $mongo = $this->contentRepo->addContent($data);
                 $article->mongo_id = $mongo->_id;
                 $article->save();
             }
